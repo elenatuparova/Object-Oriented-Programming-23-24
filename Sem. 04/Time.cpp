@@ -6,7 +6,7 @@ private:
 	unsigned minutes;
 	unsigned seconds;
 
-	unsigned getSecondsFromMidnigth() const {
+	unsigned getSecondsFromMidnight() const {
 		return hours * 3600 + minutes * 60 + seconds;
 	}
 
@@ -32,10 +32,14 @@ public:
 		setSeconds(seconds);
 	}
 
-	void increment() {
-		unsigned secondsFromMidnigth = getSecondsFromMidnigth();
-		secondsFromMidnigth++;
+	Time(unsigned secondsFromMidnight) {
+		setTimeFromSeconds(secondsFromMidnight);
+	}
 
+	void increment() {
+		unsigned secondsFromMidnight = getSecondsFromMidnight();
+		secondsFromMidnight++;
+		setTimeFromSeconds(secondsFromMidnight);
 	}
 
 	void setHours(unsigned hours) {
@@ -75,6 +79,36 @@ public:
 
 	unsigned getSeconds() const {
 		return seconds;
+	}
+
+	int compare(const Time& other) const {
+		unsigned mySecondsFromMidnight = getSecondsFromMidnight();
+		unsigned otherSecondsFromMidnight = other.getSecondsFromMidnight();
+
+		return mySecondsFromMidnight - otherSecondsFromMidnight;
+	}
+
+	bool isPartyTime() const {
+		Time begin(23, 0, 0);
+		Time end(6, 0, 0);
+
+		return compare(begin) > 0 || compare(end) < 0;
+	}
+
+	bool isDinnerTime() const {
+		Time begin(20, 30, 0);
+		Time end(22, 0, 0);
+
+		return compare(begin) > 0 && compare(end) < 0;
+	}
+
+	Time getDiff(const Time& other) const {
+		unsigned diffSeconds = fabs(getSecondsFromMidnight() - other.getSecondsFromMidnight());
+		return Time(diffSeconds);
+	}
+
+	void print() const {
+		std::cout << hours << ":" << minutes << ":" << seconds << std::endl;
 	}
 };
 
