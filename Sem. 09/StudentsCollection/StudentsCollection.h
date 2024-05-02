@@ -28,8 +28,8 @@ public:
 
 	~StudentsCollection();
 
-	void addAtFirstFree(const Student& student);
-	void addAtFirstFree(Student&& student);
+	unsigned addAtFirstFree(const Student& student);
+	unsigned  addAtFirstFree(Student&& student);
 
 	void setAtIdx(const Student& student, size_t idx);
 	void setAtIdx(Student&& student, size_t idx);
