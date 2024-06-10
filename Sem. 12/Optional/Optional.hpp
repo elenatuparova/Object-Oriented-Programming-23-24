@@ -71,40 +71,56 @@ Optional<T>::~Optional() {
 
 template<typename T>
 bool Optional<T>::hasValue() const {
-	// TODO
+	return value != nullptr;
 }
 
 template<typename T>
 const T& Optional<T>::getValue() const {
-	// TODO
+	if (!hasValue()) {
+		throw std::logic_error("Optional::No value set!");
+	}
+	return *value;
 }
 
 template<typename T>
 void Optional<T>::setValue(const T& newValue) {
-	// TODO
+	if (hasValue()) {
+		clear();
+	}
+	value = new T(newValue);
 }
 
 template<typename T>
 void Optional<T>::setValue(T&& newValue) {
-	// TODO
+	if (hasValue()) {
+		clear();
+	}
+	value = new T(std::move(newValue));
 }
 
 template<typename T>
 void Optional<T>::clear() {
-	// TODO
+	free();
+	value = nullptr;
 }
 
 template<typename T>
 void Optional<T>::copyFrom(const Optional<T>& other) {
-	// TODO
+	if (other.value == nullptr) {
+		value = nullptr;
+	}
+	else {
+		value = new T(*other.value);
+	}
 }
 
 template<typename T>
 void Optional<T>::moveFrom(Optional<T>&& other) {
-	// TODO
+	value = other.value;
+	other.value = nullptr;
 }
 
 template<typename T>
 void Optional<T>::free() {
-	// TODO
-}
+	delete value;
+} 
